@@ -11,20 +11,41 @@
 template<class T>
 class Model{
     public:
+        static int ID;
         Model(LinSpace1D * linSpace1D, T shape){
             this->linSpace1D = linSpace1D;
             this->shape = shape;
+            modelID = ++ID;
+        }
+
+        Model(LinSpace1D * linSpace1D){
+            this->linSpace1D = linSpace1D;
+            this->shape = T::makeShape();
+            modelID = ++ID;
+        }
+
+        Model(LinSpace1D * linSpace1D, ObservedAnomaly1D * observedAnomaly1D){
+            this->linSpace1D = linSpace1D;
+            this->shape = T::makeShape();
+            calculateAnomaly();
+            addObservation(observedAnomaly1D);
+            calculateResidual();
+            modelID = ++ID;
         }
 
         void print(){
             shape.print();
             linSpace1D->print(false);
             std::cout << "Residual: " << residual << std::endl;
+            std::cout << "ID: " << modelID << std::endl;
+            std::cout << std::endl;
         }
 
         void calculateAnomaly(){
+            anomaly.clear();
             for (int i = 0; i<linSpace1D->getSize();i++){
                 anomaly.push_back(shape.forwardModel(linSpace1D->getElement(i)));
+                //std::cout << anomaly[i] << std::endl;
             }
         }
 
@@ -55,7 +76,7 @@ class Model{
         }
 
         void addObservation(ObservedAnomaly1D * observedAnomaly1D){
-            this-> observedAnomaly1D = observedAnomaly1D;
+            this->observedAnomaly1D = observedAnomaly1D;
         }
 
         void calculateResidual(){
@@ -67,12 +88,37 @@ class Model{
             residual = sqrt(residual) / anomaly.size();           
         }
 
+        double getResidual(){
+            return residual;
+        }
+
+        /*bool operator<(const Model<T>& p1) { 
+            return this->getResidual() < p1.getResidual();
+        }*/
+
     private:
         LinSpace1D * linSpace1D;
         ObservedAnomaly1D * observedAnomaly1D;
         T shape;
         double residual = 0;
         std::vector<double> anomaly;
+        unsigned int modelID;
+        friend bool operator<(const Model<T>& p1, const Model<T>& p2){
+            return p1.residual < p2.residual;
+        }
+        friend bool operator>(const Model<T>& p1, const Model<T>& p2){
+            return p1.residual > p2.residual;
+        }
 };
+
+/*
+template <class T>
+struct cca {
+    bool operator()(Model<T>& a, Model<T>& b) const {
+        return a.getResidual() < b.getResidual();
+    }
+};*/
+
+
 
 #endif //  GRAVITYMODELLING_MODEL_H

@@ -1,6 +1,7 @@
 #include "../include/Sphere.h"
 #include "../include/Shape2D.h"
 #include <math.h>
+#include <random>
 
 Sphere::Sphere():Shape2D(){
     this->deltaRho = 1000;
@@ -43,3 +44,45 @@ double Sphere::forwardModel(double x){
             1/(pow(x-coordX,2)+pow(coordZ,2))*
             coordZ/(pow((pow(x-coordX,2) + pow(coordZ,2)),(2/3))); //mgal
 }
+
+
+Sphere Sphere::makeShape(){
+    double minCoordX = -100;
+    double maxCoordX = 100;
+    double minCoordZ = 50;
+    double maxCoordZ = 1000;
+    double minDeltaRho = 100;
+    double maxDeltaRho = 5000;
+    double minRadius = 5;
+    double maxRadius = 100;
+    std::random_device re;
+
+    std::uniform_real_distribution<double> X(minCoordX,maxCoordX);
+    std::uniform_real_distribution<double> Z(minCoordZ,maxCoordZ);
+    std::uniform_real_distribution<double> DR(minDeltaRho,maxDeltaRho);
+    std::uniform_real_distribution<double> R(minRadius,maxRadius);
+
+    Sphere sp(X(re), Z(re), DR(re), R(re));
+    return sp;
+}
+
+/*
+Sphere * Sphere::makeSphere(){
+    double minCoordX = -100;
+    double maxCoordX = 100;
+    double minCoordZ = 50;
+    double maxCoordZ = 1000;
+    double minDeltaRho = 100;
+    double maxDeltaRho = 5000;
+    double minRadius = 5;
+    double maxRadius = 100;
+    std::random_device re;
+
+    std::uniform_real_distribution<double> X(minCoordX,maxCoordX);
+    std::uniform_real_distribution<double> Z(minCoordZ,maxCoordZ);
+    std::uniform_real_distribution<double> DR(minDeltaRho,maxDeltaRho);
+    std::uniform_real_distribution<double> R(minRadius,maxRadius);
+
+    Sphere * sp = new Sphere(X(re), Z(re), DR(re), R(re));
+    return sp;
+}*/

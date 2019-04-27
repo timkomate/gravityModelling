@@ -14,6 +14,7 @@ class Shape2D{
         virtual double getCoordX();
         virtual double getCoordZ();
         virtual double forwardModel(double) = 0;
+        //virtual Shape2D * makeShape2D();
     protected:
         double coordX;
         double coordZ;

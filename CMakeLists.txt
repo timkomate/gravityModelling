@@ -12,5 +12,6 @@ add_executable(gravityModelling main.cpp
     ../src/Sphere.cpp ../include/Sphere.h
     ../src/LinSpace1D.cpp ../include/LinSpace1D.h
     ../include/Model.hpp
-    ../include/ObservedAnomaly1D.h ../src/ObservedAnomaly1D.cpp)
+    ../include/ObservedAnomaly1D.h ../src/ObservedAnomaly1D.cpp
+    ../include/Population.hpp)
 

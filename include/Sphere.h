@@ -14,6 +14,8 @@ class Sphere: public Shape2D{
         double getDeltaRho();
         double getRadius();
         double forwardModel(double);
+        static Sphere makeShape();
+        //static Sphere * makeSphere();
     protected:
         double radius;
         double deltaRho;
