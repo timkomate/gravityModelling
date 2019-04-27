@@ -11,20 +11,20 @@ int Model<T>::ID = 0;
 
 int main(int args, char ** argv){
     Sphere sp(0,100,1000,10);
-    LinSpace1D lp(-100,100);
+    Sphere sp2(-100,50,500,5);
+    LinSpace1D lp(-100,100,1);
     Model<Sphere> trueModel(&lp,sp);
     trueModel.calculateAnomaly();
-    ObservedAnomaly1D oa(trueModel.getAnomaly(),lp.getContainer());
-    oa.addNoise(0,0.002);
-    trueModel.print();
-    //Population<Sphere, 10> p(&lp,&oa);
-    Population<Sphere, 10> p;
-    for (int i = 0; i < 10000; i++){
-        Model<Sphere> randomModel(&lp, &oa);
-        //randomModel.print();
-        p.addModel(randomModel);
-    }
-    p.top().print();
+    trueModel.addNoise(0,0.0035);
     trueModel.writeAnomaly("anomaly.xy");
+    ObservedAnomaly1D oa(trueModel.getAnomaly(),lp.getContainer());
+    //oa.addNoise(0,0.1);
+    trueModel.print();
+    Population<Sphere, 10000, 20> p(&lp,&oa);
+    //p.top().print();
+    p.doEvolution(0.15);
+    p.top().print();
+    p.top().writeAnomaly("modelAnomaly.xy");
+    
     return 0;
 }

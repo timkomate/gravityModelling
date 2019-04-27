@@ -33,6 +33,16 @@ class Model{
             modelID = ++ID;
         }
 
+        Model(LinSpace1D * linSpace1D, ObservedAnomaly1D * observedAnomaly1D, T shape){
+            this->linSpace1D = linSpace1D;
+            this->shape = shape;
+            calculateAnomaly();
+            addObservation(observedAnomaly1D);
+            calculateResidual();
+            modelID = ++ID;
+        }
+
+
         void print(){
             shape.print();
             linSpace1D->print(false);
@@ -75,6 +85,10 @@ class Model{
             return shape;
         }
 
+        T* getShapePointer(){
+            return &shape;
+        }
+
         void addObservation(ObservedAnomaly1D * observedAnomaly1D){
             this->observedAnomaly1D = observedAnomaly1D;
         }
@@ -92,9 +106,10 @@ class Model{
             return residual;
         }
 
-        /*bool operator<(const Model<T>& p1) { 
-            return this->getResidual() < p1.getResidual();
-        }*/
+        static Model<T> pairModels(Model<T> m1, Model<T> m2, LinSpace1D * linSpace1D, ObservedAnomaly1D * observedAnomaly1D, double mutationFactor){
+            T shape = T::breedShape(m1.getShapePointer(),m2.getShapePointer(), mutationFactor);
+            return Model(linSpace1D, observedAnomaly1D, shape);
+        }
 
     private:
         LinSpace1D * linSpace1D;

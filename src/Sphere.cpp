@@ -66,6 +66,36 @@ Sphere Sphere::makeShape(){
     return sp;
 }
 
+Sphere Sphere::breedShape(Sphere * s1, Sphere * s2, double mutationFactor){
+    double x, z, dr, r;
+    std::random_device re;
+    std::uniform_real_distribution<double> R(0,1);
+    std::uniform_int_distribution<int> X(1,2);
+    if (R(re) <=  mutationFactor){
+        return Sphere::makeShape();
+    }
+    if (X(re) == 1)
+        x = s1->getCoordX();
+    else
+        x = s2->getCoordX();
+    
+    if (X(re) == 1)
+        z = s1->getCoordZ();
+    else
+        z = s2->getCoordZ();
+    
+    if (X(re) == 1)
+        dr = s1->getDeltaRho();
+    else
+        dr = s2->getDeltaRho();
+
+    if (X(re) == 1)
+        r = s1->getRadius();
+    else
+        r = s2->getRadius();
+    return Sphere(x,z,dr,r);
+}
+
 /*
 Sphere * Sphere::makeSphere(){
     double minCoordX = -100;

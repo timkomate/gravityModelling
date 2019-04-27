@@ -15,6 +15,7 @@ class Sphere: public Shape2D{
         double getRadius();
         double forwardModel(double);
         static Sphere makeShape();
+        static Sphere breedShape(Sphere *,Sphere *, double);
         //static Sphere * makeSphere();
     protected:
         double radius;
